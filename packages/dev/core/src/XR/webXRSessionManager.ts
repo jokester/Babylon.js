@@ -45,6 +45,7 @@ export class WebXRSessionManager implements IDisposable, IWebXRRenderTargetTextu
     public defaultHeightCompensation = 1.7;
     /**
      * Fires every time a new xrFrame arrives which can be used to update the camera
+     * @TODO find what are subscribers
      */
     public onXRFrameObservable: Observable<XRFrame> = new Observable<XRFrame>();
     /**
@@ -185,6 +186,7 @@ export class WebXRSessionManager implements IDisposable, IWebXRRenderTargetTextu
     public getWebXRRenderTarget(options?: WebXRManagedOutputCanvasOptions): WebXRRenderTarget {
         const engine = this.scene.getEngine();
         if (this._xrNavigator.xr.native) {
+            // @note is this for babylon native?
             return new NativeXRRenderTarget(this);
         } else {
             options = options || WebXRManagedOutputCanvasOptions.GetDefaults(engine);
@@ -280,7 +282,8 @@ export class WebXRSessionManager implements IDisposable, IWebXRRenderTargetTextu
             return;
         }
 
-        // Tell the engine's render loop to be driven by the xr session's refresh rate and provide xr pose information
+        // IMPORTANT Tell the engine's render loop to be driven by the xr session's refresh rate and provide xr pose information
+        // @Note engine.runRenderLoop is still required
         this._engine.customAnimationFrameRequester = {
             requestAnimationFrame: this.session.requestAnimationFrame.bind(this.session),
             renderFunction: (timestamp: number, xrFrame: Nullable<XRFrame>) => {
@@ -293,8 +296,8 @@ export class WebXRSessionManager implements IDisposable, IWebXRRenderTargetTextu
                 if (xrFrame) {
                     this.inXRFrameLoop = true;
                     this._engine.framebufferDimensionsObject = this._baseLayerRTTProvider?.getFramebufferDimensions() || null;
-                    this.onXRFrameObservable.notifyObservers(xrFrame);
-                    this._engine._renderLoop();
+                    this.onXRFrameObservable.notifyObservers(xrFrame); // this should prepare the frame for rendering
+                    this._engine._renderLoop(); // because we are overriding renderFunction. this also queues the next run of renderFunction
                     this._engine.framebufferDimensionsObject = null;
                     this.inXRFrameLoop = false;
                 }
@@ -307,6 +310,7 @@ export class WebXRSessionManager implements IDisposable, IWebXRRenderTargetTextu
         if (typeof window !== "undefined" && window.cancelAnimationFrame) {
             window.cancelAnimationFrame(this._engine._frameHandler);
         }
+        // render once (why?)
         this._engine._renderLoop();
     }
 

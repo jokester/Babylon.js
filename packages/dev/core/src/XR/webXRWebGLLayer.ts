@@ -27,6 +27,7 @@ export class WebXRWebGLLayerWrapper extends WebXRLayerWrapper {
 
 /**
  * Provides render target textures and other important rendering information for a given XRWebGLLayer.
+ * @note THIS is the impl for webgl + webxr
  * @hidden
  */
 export class WebXRWebGLLayerRenderTargetTextureProvider extends WebXRLayerRenderTargetTextureProvider {

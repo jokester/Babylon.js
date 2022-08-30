@@ -133,7 +133,7 @@ export interface IWebXRNearInteractionOptions {
 }
 
 /**
- * A module that will enable near interaction near interaction for hands and motion controllers of XR Input Sources
+ * A module that will enable near interaction for hands and motion controllers of XR Input Sources
  */
 export class WebXRNearInteraction extends WebXRAbstractFeature {
     private static _IdCounter = 200;

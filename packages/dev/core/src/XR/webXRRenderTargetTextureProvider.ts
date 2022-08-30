@@ -14,7 +14,7 @@ import type { WebXRLayerWrapper } from "./webXRLayerWrapper";
  */
 export interface IWebXRRenderTargetTextureProvider extends IDisposable {
     /**
-     * Attempts to set the framebuffer-size-normalized viewport to be rendered this frame for this view.
+     * Attempts to set (the framebuffer-size-normalized viewport to be rendered this frame) for this view.
      * In the event of a failure, the supplied viewport is not updated.
      * @param viewport the viewport to which the view will be rendered
      * @param view the view for which to set the viewport

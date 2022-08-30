@@ -530,7 +530,7 @@ export class ThinEngine {
     public _workingContext: Nullable<ICanvasRenderingContext>;
 
     /** @hidden */
-    public _boundRenderFunction: any;
+    public _boundRenderFunction: Nullable<() => void>;
 
     private _vaoRecordInProgress = false;
     private _mustWipeVertexAttributes = false;
@@ -1529,34 +1529,10 @@ export class ThinEngine {
         }
     }
 
-    /** @hidden */
+    /** @hidden
+     * @note overriden in {@name Engine}  */
     public _renderLoop(): void {
-        if (!this._contextWasLost) {
-            let shouldRender = true;
-            if (!this.renderEvenInBackground && this._windowIsBackground) {
-                shouldRender = false;
-            }
-
-            if (shouldRender) {
-                // Start new frame
-                this.beginFrame();
-
-                for (let index = 0; index < this._activeRenderLoops.length; index++) {
-                    const renderFunction = this._activeRenderLoops[index];
-
-                    renderFunction();
-                }
-
-                // Present
-                this.endFrame();
-            }
-        }
-
-        if (this._activeRenderLoops.length > 0) {
-            this._frameHandler = this._queueNewFrame(this._boundRenderFunction, this.getHostWindow());
-        } else {
-            this._renderingQueueLaunched = false;
-        }
+        // OVERRIDDEN ANYWAY
     }
 
     /**
@@ -1638,6 +1614,7 @@ export class ThinEngine {
     /**
      * Register and execute a render loop. The engine can have more than one render function
      * @param renderFunction defines the function to continuously execute
+     * @final (not overridden by {@name Engine} )
      */
     public runRenderLoop(renderFunction: () => void): void {
         if (this._activeRenderLoops.indexOf(renderFunction) !== -1) {

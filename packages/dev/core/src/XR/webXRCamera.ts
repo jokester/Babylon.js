@@ -161,6 +161,9 @@ export class WebXRCamera extends FreeCamera {
 
     private _rotate180 = new Quaternion(0, 1, 0, 0);
 
+    /**
+     * @private
+     */
     private _updateFromXRSession() {
         const pose = this._xrSessionManager.currentFrame && this._xrSessionManager.currentFrame.getViewerPose(this._xrSessionManager.referenceSpace);
         this._lastXRViewerPose = pose || undefined;
@@ -187,7 +190,6 @@ export class WebXRCamera extends FreeCamera {
         }
 
         if (pose.transform) {
-            const orientation = pose.transform.orientation;
             if (pose.transform.orientation.x === undefined) {
                 // Babylon native polyfill can return an undefined orientation value
                 // When not initialized
@@ -196,6 +198,7 @@ export class WebXRCamera extends FreeCamera {
             const pos = pose.transform.position;
             this._referencedPosition.set(pos.x, pos.y, pos.z);
 
+            const orientation = pose.transform.orientation;
             this._referenceQuaternion.set(orientation.x, orientation.y, orientation.z, orientation.w);
             if (!this._scene.useRightHandedSystem) {
                 this._referencedPosition.z *= -1;
@@ -299,6 +302,9 @@ export class WebXRCamera extends FreeCamera {
         }
     }
 
+    /**
+     *
+     */
     private _updateReferenceSpace() {
         // were position & rotation updated OUTSIDE of the xr update loop
         if (!this.position.equals(this._referencedPosition) || !this.rotationQuaternion.equals(this._referenceQuaternion)) {

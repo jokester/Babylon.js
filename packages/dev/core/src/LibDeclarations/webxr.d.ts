@@ -117,6 +117,10 @@ declare class XRWebGLBinding {
     getViewSubImage(layer: XRProjectionLayer, view: XRView): XRWebGLSubImage;
 }
 
+/**
+ * connects webGL to XRSession
+ * provides eye (XRView) to viewport query
+ */
 declare class XRWebGLLayer implements XRLayer {
     static getNativeFramebufferScaleFactor(session: XRSession): number;
     constructor(session: XRSession, context: WebGLRenderingContext | WebGL2RenderingContext, layerInit?: XRWebGLLayerInit);

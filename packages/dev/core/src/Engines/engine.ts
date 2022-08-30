@@ -1305,6 +1305,7 @@ export class Engine extends ThinEngine {
     }
 
     public _renderLoop(): void {
+        /** draw 1 frame */
         if (!this._contextWasLost) {
             let shouldRender = true;
             if (!this.renderEvenInBackground && this._windowIsBackground) {
@@ -1316,7 +1317,7 @@ export class Engine extends ThinEngine {
                 this.beginFrame();
 
                 // Child canvases
-                if (!this._renderViews()) {
+                if (/* no child views */ !this._renderViews()) {
                     // Main frame
                     this._renderFrame();
                 }
@@ -1326,6 +1327,7 @@ export class Engine extends ThinEngine {
             }
         }
 
+        /** queue next frame only if {@name runRenderLoop} has been called */
         if (this._activeRenderLoops.length > 0) {
             // Register new frame
             if (this.customAnimationFrameRequester) {

@@ -205,8 +205,11 @@ Scene.prototype.createDefaultEnvironment = function (options: Partial<IEnvironme
     return null;
 };
 
+/**
+ * @deprecated ? it uses webVR
+ */
 Scene.prototype.createDefaultVRExperience = function (webVROptions: VRExperienceHelperOptions = {}): VRExperienceHelper {
-    return new VRExperienceHelper(this, webVROptions);
+    throw 'defautVRExperience is deprecated, please use webVRExperience instead';
 };
 
 Scene.prototype.createDefaultXRExperienceAsync = function (options: WebXRDefaultExperienceOptions = {}): Promise<WebXRDefaultExperience> {

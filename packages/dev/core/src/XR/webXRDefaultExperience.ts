@@ -125,16 +125,14 @@ export class WebXRDefaultExperience {
     private constructor() {}
 
     /**
+     * @note main entrypoint in example
      * Creates the default xr experience
      * @param scene scene
      * @param options options for basic configuration
      * @returns resulting WebXRDefaultExperience
      */
-    public static CreateAsync(scene: Scene, options: WebXRDefaultExperienceOptions = {}) {
-        const result = new WebXRDefaultExperience();
-        scene.onDisposeObservable.addOnce(() => {
-            result.dispose();
-        });
+    public static CreateAsync(scene: Scene, options: WebXRDefaultExperienceOptions = {}): Promise<WebXRDefaultExperience> {
+        var result = new WebXRDefaultExperience();
         // init the UI right after construction
         if (!options.disableDefaultUI) {
             const uiOptions: WebXREnterExitUIOptions = {
